@@ -6,18 +6,22 @@ import com.spiritual.bhaktipath.R
 import com.spiritual.bhaktipath.domain.repository.ItemsRepository
 import com.spiritual.bhaktipath.utils.ItemsData
 import com.spiritual.bhaktipath.utils.JsonUtils
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class ItemsRepositoryImpl(private val context: Context) : ItemsRepository {
+class ItemsRepositoryImpl @Inject constructor(@ApplicationContext private val context: Context) :
+    ItemsRepository {
 
-    override fun getItems(): ItemsData {
+    override fun getItems(): List<ItemsData> {
         return try {
-            JsonUtils.readItems(
+            val items = JsonUtils.readItems(
                 context = context,
                 resourceId = R.raw.items
             )
+            listOf(items)
         } catch (e: Exception) {
             Log.e("ItemsRepositoryImpl", "Failed to load items", e)
-            ItemsData()
+            emptyList()
         }
     }
 }

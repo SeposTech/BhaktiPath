@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.SelfImprovement
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,134 +47,68 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.spiritual.bhaktipath.presentation.viewmodel.ItemsViewModel
 import com.spiritual.bhaktipath.ui.theme.BhaktiPathTheme
 
-// ----------------------------------------------------
 // Spiritual Colors
-// ----------------------------------------------------
-
 private val TopBarColor = Color(0xFFE8751A)
 private val PrimaryColor = Color(0xFF9A4D00)
 private val PrimaryDark = Color(0xFF743700)
-
 private val BackgroundColor = Color(0xFFFFF8E9)
 private val CardColor = Color(0xFFFFFEFB)
-
 private val SearchBackground = Color(0xFFFFFDF9)
 private val SearchText = Color(0xFF3F3026)
 private val SearchHint = Color(0xFF9A8F86)
-
 private val SelectedTabBackground = Color(0xFFFFE4C2)
 private val UnselectedTabColor = Color(0xFF81766D)
-
 private val CardTextColor = Color(0xFF402719)
 private val CardSubTextColor = Color(0xFF927E70)
-
 private val IconBackground = Color(0xFFFFE8CA)
-
-
-// ----------------------------------------------------
-// Home Screen
-// ----------------------------------------------------
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ItemsViewModel = hiltViewModel()
 ) {
+    var selectedTab by remember { mutableIntStateOf(0) }
+    var searchQuery by remember { mutableStateOf("") }
 
-    var selectedTab by remember {
-        mutableIntStateOf(0)
-    }
+    val tabs = listOf("Chalisa", "Aarti", "Mantra")
+    val uiState by viewModel.uiState
 
-    var searchQuery by remember {
-        mutableStateOf("")
-    }
-
-    val tabs = listOf(
-        "Chalisa",
-        "Aarti",
-        "Mantra"
-    )
-
-    val items = when (selectedTab) {
-
-        // ------------------------------------------------
-        // Chalisa
-        // ------------------------------------------------
-
-        0 -> listOf(
-            "Hanuman Chalisa",
-            "Sankat Mochan Hanuman Ashtak",
-            "Bajrang Baan",
-            "Ram Chalisa",
-            "Shiv Chalisa",
-            "Durga Chalisa",
-            "Ganesh Chalisa"
-        )
-
-        // ------------------------------------------------
-        // Aarti
-        // ------------------------------------------------
-
-        1 -> listOf(
-            "Hanuman Aarti",
-            "Shiv Aarti",
-            "Ganesh Aarti",
-            "Durga Aarti",
-            "Lakshmi Aarti",
-            "Ram Aarti",
-            "Krishna Aarti"
-        )
-
-        // ------------------------------------------------
-        // Mantra
-        // ------------------------------------------------
-
-        else -> listOf(
-            "Hanuman Mantra",
-            "Om Namah Shivay",
-            "Mahamrityunjaya Mantra",
-            "Gayatri Mantra",
-            "Ganesh Mantra",
-            "Durga Mantra",
-            "Ram Mantra"
-        )
+    val items = when (uiState) {
+        is ItemsViewModel.UiState.Success -> {
+            val itemsData = (uiState as ItemsViewModel.UiState.Success).items
+            itemsData.firstOrNull()?.let { data ->
+                when (selectedTab) {
+                    0 -> data.chalisa
+                    1 -> data.aarti
+                    else -> data.mantra
+                }
+            } ?: emptyList()
+        }
+        else -> emptyList()
     }
 
     val filteredItems = items.filter {
-        it.contains(
-            searchQuery,
-            ignoreCase = true
-        )
+        it.contains(searchQuery, ignoreCase = true)
     }
-
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = BackgroundColor,
-
-        // ------------------------------------------------
-        // Top Bar
-        // ------------------------------------------------
-
         topBar = {
-
             CenterAlignedTopAppBar(
-
                 title = {
-
                     TextField(
                         value = searchQuery,
-
-                        onValueChange = {
-                            searchQuery = it
-                        },
-
+                        onValueChange = { searchQuery = it },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 4.dp),
-
                         placeholder = {
                             Text(
                                 text = "Search ${tabs[selectedTab]}",
@@ -181,54 +116,38 @@ fun HomeScreen(
                                 fontSize = 14.sp
                             )
                         },
-
                         singleLine = true,
-
                         leadingIcon = {
-
                             Icon(
                                 imageVector = Icons.Default.Search,
                                 contentDescription = "Search",
                                 tint = PrimaryColor
                             )
                         },
-
                         shape = RoundedCornerShape(30.dp),
-
                         colors = TextFieldDefaults.colors(
-
                             focusedContainerColor = SearchBackground,
                             unfocusedContainerColor = SearchBackground,
-
                             focusedTextColor = SearchText,
                             unfocusedTextColor = SearchText,
-
                             cursorColor = PrimaryColor,
-
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent
                         )
                     )
                 },
-
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                     containerColor = TopBarColor
                 )
             )
         }
     ) { innerPadding ->
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(BackgroundColor)
                 .padding(innerPadding)
         ) {
-
-            // ------------------------------------------------
-            // Welcome Header
-            // ------------------------------------------------
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -239,29 +158,19 @@ fun HomeScreen(
                         bottom = 8.dp
                     )
             ) {
-
                 Text(
                     text = "🪔 Bhakti Path",
                     color = PrimaryDark,
                     fontSize = 21.sp,
                     fontWeight = FontWeight.Bold
                 )
-
-                Spacer(
-                    modifier = Modifier.height(4.dp)
-                )
-
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = "Begin your day with devotion",
                     color = CardSubTextColor,
                     fontSize = 13.sp
                 )
             }
-
-
-            // ------------------------------------------------
-            // Tabs
-            // ------------------------------------------------
 
             Row(
                 modifier = Modifier
@@ -272,9 +181,7 @@ fun HomeScreen(
                     ),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-
                 tabs.forEachIndexed { index, title ->
-
                     DevotionalTab(
                         title = title,
                         selected = selectedTab == index,
@@ -287,55 +194,71 @@ fun HomeScreen(
                 }
             }
 
+            when (uiState) {
+                is ItemsViewModel.UiState.Loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(color = PrimaryColor)
+                    }
+                }
 
-            // ------------------------------------------------
-            // List
-            // ------------------------------------------------
-
-            if (filteredItems.isEmpty()) {
-
-                EmptySearchView()
-
-            } else {
-
-                LazyColumn(
-
-                    modifier = Modifier.fillMaxSize(),
-
-                    contentPadding = PaddingValues(
-                        start = 16.dp,
-                        end = 16.dp,
-                        top = 8.dp,
-                        bottom = 24.dp
-                    ),
-
-                    verticalArrangement = Arrangement.spacedBy(
-                        12.dp
-                    )
-                ) {
-
-                    items(
-                        items = filteredItems
-                    ) { item ->
-
-                        BhaktiItem(
-                            title = item,
-                            type = tabs[selectedTab],
-                            onClick = {
-                                // Navigate to detail screen
-                            }
+                is ItemsViewModel.UiState.Error -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 30.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text(text = "⚠️", fontSize = 42.sp)
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "Failed to load content",
+                            color = PrimaryDark,
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center
                         )
+                        Spacer(modifier = Modifier.height(6.dp))
+                        Text(
+                            text = (uiState as ItemsViewModel.UiState.Error).message,
+                            color = CardSubTextColor,
+                            fontSize = 13.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+
+                is ItemsViewModel.UiState.Success -> {
+                    if (filteredItems.isEmpty()) {
+                        EmptySearchView()
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize(),
+                            contentPadding = PaddingValues(
+                                start = 16.dp,
+                                end = 16.dp,
+                                top = 8.dp,
+                                bottom = 24.dp
+                            ),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            items(filteredItems) { item ->
+                                BhaktiItem(
+                                    title = item,
+                                    type = tabs[selectedTab],
+                                    onClick = {}
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
     }
 }
-
-
-// ----------------------------------------------------
-// Devotional Tab
-// ----------------------------------------------------
 
 @Composable
 private fun DevotionalTab(
@@ -344,14 +267,10 @@ private fun DevotionalTab(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-
     Card(
         modifier = modifier,
-
         onClick = onClick,
-
         shape = RoundedCornerShape(24.dp),
-
         colors = CardDefaults.cardColors(
             containerColor = if (selected) {
                 SelectedTabBackground
@@ -359,46 +278,25 @@ private fun DevotionalTab(
                 Color.White.copy(alpha = 0.75f)
             }
         ),
-
         elevation = CardDefaults.cardElevation(
             defaultElevation = if (selected) 2.dp else 0.dp
         )
     ) {
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    vertical = 11.dp
-                ),
+                .padding(vertical = 11.dp),
             contentAlignment = Alignment.Center
         ) {
-
             Text(
                 text = title,
-
-                color = if (selected) {
-                    PrimaryDark
-                } else {
-                    UnselectedTabColor
-                },
-
+                color = if (selected) PrimaryDark else UnselectedTabColor,
                 fontSize = 14.sp,
-
-                fontWeight = if (selected) {
-                    FontWeight.Bold
-                } else {
-                    FontWeight.Medium
-                }
+                fontWeight = if (selected) FontWeight.Bold else FontWeight.Medium
             )
         }
     }
 }
-
-
-// ----------------------------------------------------
-// Bhakti Item
-// ----------------------------------------------------
 
 @Composable
 private fun BhaktiItem(
@@ -406,49 +304,25 @@ private fun BhaktiItem(
     type: String,
     onClick: () -> Unit
 ) {
-
     val icon = when (type) {
-
         "Chalisa" -> Icons.Default.MenuBook
-
         "Aarti" -> Icons.Default.MusicNote
-
         else -> Icons.Default.SelfImprovement
     }
 
     Card(
-
-        modifier = Modifier
-            .fillMaxWidth(),
-
+        modifier = Modifier.fillMaxWidth(),
         onClick = onClick,
-
         shape = RoundedCornerShape(18.dp),
-
-        colors = CardDefaults.cardColors(
-            containerColor = CardColor
-        ),
-
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        )
+        colors = CardDefaults.cardColors(containerColor = CardColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 14.dp
-                ),
-
+                .padding(horizontal = 16.dp, vertical = 14.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-
-            // ------------------------------------------------
-            // Icon
-            // ------------------------------------------------
-
             Box(
                 modifier = Modifier
                     .size(48.dp)
@@ -456,10 +330,8 @@ private fun BhaktiItem(
                         color = IconBackground,
                         shape = RoundedCornerShape(14.dp)
                     ),
-
                 contentAlignment = Alignment.Center
             ) {
-
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
@@ -468,52 +340,24 @@ private fun BhaktiItem(
                 )
             }
 
+            Spacer(modifier = Modifier.size(14.dp))
 
-            Spacer(
-                modifier = Modifier.size(14.dp)
-            )
-
-
-            // ------------------------------------------------
-            // Title
-            // ------------------------------------------------
-
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = title,
-
                     color = CardTextColor,
-
                     fontSize = 16.sp,
-
                     fontWeight = FontWeight.SemiBold
                 )
-
-                Spacer(
-                    modifier = Modifier.height(3.dp)
-                )
-
+                Spacer(modifier = Modifier.height(3.dp))
                 Text(
                     text = "Read & listen",
-
                     color = CardSubTextColor,
-
                     fontSize = 12.sp
                 )
             }
 
-
-            // ------------------------------------------------
-            // Arrow
-            // ------------------------------------------------
-
-            IconButton(
-                onClick = onClick
-            ) {
-
+            IconButton(onClick = onClick) {
                 Icon(
                     imageVector = Icons.Default.ArrowForwardIos,
                     contentDescription = "Open",
@@ -525,73 +369,37 @@ private fun BhaktiItem(
     }
 }
 
-
-// ----------------------------------------------------
-// Empty Search
-// ----------------------------------------------------
-
 @Composable
 private fun EmptySearchView() {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 30.dp),
-
         horizontalAlignment = Alignment.CenterHorizontally,
-
         verticalArrangement = Arrangement.Center
     ) {
-
-        Text(
-            text = "🔍",
-            fontSize = 42.sp
-        )
-
-        Spacer(
-            modifier = Modifier.height(12.dp)
-        )
-
+        Text(text = "🔍", fontSize = 42.sp)
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = "No devotional content found",
-
             color = PrimaryDark,
-
             fontSize = 17.sp,
-
             fontWeight = FontWeight.Bold,
-
             textAlign = TextAlign.Center
         )
-
-        Spacer(
-            modifier = Modifier.height(6.dp)
-        )
-
+        Spacer(modifier = Modifier.height(6.dp))
         Text(
             text = "Try searching with a different name",
-
             color = CardSubTextColor,
-
             fontSize = 13.sp,
-
             textAlign = TextAlign.Center
         )
     }
 }
 
-
-// ----------------------------------------------------
-// Preview
-// ----------------------------------------------------
-
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewHomeScreen() {
-
     BhaktiPathTheme {
         HomeScreen()
     }

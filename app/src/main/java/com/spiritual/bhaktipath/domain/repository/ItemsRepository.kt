@@ -4,5 +4,5 @@ import com.spiritual.bhaktipath.utils.ItemsData
 
 interface ItemsRepository {
 
-    fun getItems(): ItemsData
+    fun getItems(): List<ItemsData>
 }
