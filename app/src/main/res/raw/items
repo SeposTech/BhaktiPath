@@ -1,0 +1,29 @@
+{
+  "chalisa": [
+    "Hanuman Chalisa",
+    "Sankat Mochan Hanuman Ashtak",
+    "Bajrang Baan",
+    "Ram Chalisa",
+    "Shiv Chalisa",
+    "Durga Chalisa",
+    "Ganesh Chalisa"
+  ],
+  "aarti": [
+    "Hanuman Aarti",
+    "Shiv Aarti",
+    "Ganesh Aarti",
+    "Durga Aarti",
+    "Lakshmi Aarti",
+    "Ram Aarti",
+    "Krishna Aarti"
+  ],
+  "mantra": [
+    "Hanuman Mantra",
+    "Om Namah Shivay",
+    "Mahamrityunjaya Mantra",
+    "Gayatri Mantra",
+    "Ganesh Mantra",
+    "Durga Mantra",
+    "Ram Mantra"
+  ]
+}
