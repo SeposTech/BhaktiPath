@@ -34,6 +34,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -71,13 +72,14 @@ private val IconBackground = Color(0xFFFFE8CA)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    viewModel: ItemsViewModel = hiltViewModel()
+    viewModel: ItemsViewModel = hiltViewModel(),
+    onItemClick: (Int) -> Unit = {}
 ) {
     var selectedTab by remember { mutableIntStateOf(0) }
     var searchQuery by remember { mutableStateOf("") }
 
     val tabs = listOf("Chalisa", "Aarti", "Mantra")
-    val uiState by viewModel.uiState
+    val uiState by viewModel.uiState.collectAsState()
 
     val items = when (uiState) {
         is ItemsViewModel.UiState.Success -> {
@@ -94,7 +96,7 @@ fun HomeScreen(
     }
 
     val filteredItems = items.filter {
-        it.contains(searchQuery, ignoreCase = true)
+        it.title.contains(searchQuery, ignoreCase = true)
     }
 
     Scaffold(
@@ -247,9 +249,11 @@ fun HomeScreen(
                         ) {
                             items(filteredItems) { item ->
                                 BhaktiItem(
-                                    title = item,
+                                    title = item.title,
                                     type = tabs[selectedTab],
-                                    onClick = {}
+                                    onClick = {
+                                        onItemClick(item.id)
+                                    }
                                 )
                             }
                         }

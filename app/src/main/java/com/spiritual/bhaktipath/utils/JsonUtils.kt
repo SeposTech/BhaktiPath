@@ -26,7 +26,17 @@ object JsonUtils {
 }
 
 data class ItemsData(
-    val chalisa: List<String> = emptyList(),
-    val aarti: List<String> = emptyList(),
-    val mantra: List<String> = emptyList()
+    val chalisa: List<Item> = emptyList(),
+    val aarti: List<Item> = emptyList(),
+    val mantra: List<Item> = emptyList()
+)
+
+data class Item(
+    val id: Int,
+    val title: String
+)
+
+data class ItemDetail(
+    val id: Int,
+    val content: String
 )
