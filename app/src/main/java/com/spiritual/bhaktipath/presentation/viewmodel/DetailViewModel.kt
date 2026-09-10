@@ -26,7 +26,7 @@ class DetailViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
 
-    val itemId = savedStateHandle.get<Int>("itemId") ?: 0
+       val itemId: Int = (savedStateHandle.get<String>("itemId") ?: "0").toIntOrNull() ?: 0
 
     init {
         loadDetail(itemId)

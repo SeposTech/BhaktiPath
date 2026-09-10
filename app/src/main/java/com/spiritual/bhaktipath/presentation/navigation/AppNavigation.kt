@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.spiritual.bhaktipath.presentation.screens.DetailScreen
 import com.spiritual.bhaktipath.presentation.screens.HomeScreen
 import com.spiritual.bhaktipath.presentation.screens.SplashScreen
@@ -25,7 +26,9 @@ fun AppNavigation() {
         }
 
         composable(route = Screen.Detail.route) {
-            val itemId = it.arguments?.getInt("itemId")
+              navArgument("itemId") {
+       type = androidx.navigation.NavType.IntType
+   }
             DetailScreen(onBackPress = { navController.popBackStack() })
         }
 
