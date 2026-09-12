@@ -2,15 +2,15 @@
   "chalisa": [
     {
       "id": 1,
-      "title": "Hanuman Chalisa"
+      "title": "Shiv Chalisa"
     },
     {
       "id": 2,
-      "title": "Sankat Mochan Hanuman Ashtak"
+      "title": "Hanuman Chalisa"
     },
     {
       "id": 3,
-      "title": "Bajrang Baan"
+      "title": "Ganesh Chalisa"
     },
     {
       "id": 4,
@@ -18,29 +18,33 @@
     },
     {
       "id": 5,
-      "title": "Shiv Chalisa"
-    },
-    {
-      "id": 6,
       "title": "Durga Chalisa"
     },
     {
+      "id": 6,
+      "title": "Sankat Mochan Hanuman Ashtak"
+    },
+    {
       "id": 7,
-      "title": "Ganesh Chalisa"
+      "title": "Bajrang Baan"
     }
   ],
   "aarti": [
-    {
-      "id": 8,
-      "title": "Hanuman Aarti"
-    },
     {
       "id": 9,
       "title": "Shiv Aarti"
     },
     {
+      "id": 8,
+      "title": "Hanuman Aarti"
+    },
+    {
       "id": 10,
       "title": "Ganesh Aarti"
+    },
+    {
+      "id": 13,
+      "title": "Ram Aarti"
     },
     {
       "id": 11,
@@ -51,22 +55,30 @@
       "title": "Lakshmi Aarti"
     },
     {
-      "id": 13,
-      "title": "Ram Aarti"
-    },
-    {
       "id": 14,
       "title": "Krishna Aarti"
     }
   ],
   "mantra": [
     {
+      "id": 16,
+      "title": "Om Namah Shivay"
+    },
+    {
       "id": 15,
       "title": "Hanuman Mantra"
     },
     {
-      "id": 16,
-      "title": "Om Namah Shivay"
+      "id": 19,
+      "title": "Ganesh Mantra"
+    },
+    {
+      "id": 21,
+      "title": "Ram Mantra"
+    },
+    {
+      "id": 20,
+      "title": "Durga Mantra"
     },
     {
       "id": 17,
@@ -75,18 +87,6 @@
     {
       "id": 18,
       "title": "Gayatri Mantra"
-    },
-    {
-      "id": 19,
-      "title": "Ganesh Mantra"
-    },
-    {
-      "id": 20,
-      "title": "Durga Mantra"
-    },
-    {
-      "id": 21,
-      "title": "Ram Mantra"
     }
   ]
 }

@@ -18,7 +18,7 @@ class DetailViewModel @Inject constructor(
 
     sealed interface UiState {
         object Loading : UiState
-        data class Success(val detail: String?) : UiState
+        data class Success(val title: String, val detail: String?) : UiState
         data class Error(val message: String) : UiState
     }
 
@@ -38,7 +38,7 @@ class DetailViewModel @Inject constructor(
             _uiState.value = UiState.Loading
             try {
                 val detail = detailUseCase.invoke(itemId)
-                _uiState.value = UiState.Success(detail?.content)
+                _uiState.value = UiState.Success(title = detail?.title ?: "", detail = detail?.content)
             } catch (e: Exception) {
                 _uiState.value = UiState.Error(e.message ?: "Unknown error")
             }

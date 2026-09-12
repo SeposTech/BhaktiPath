@@ -23,7 +23,25 @@ object JsonUtils {
             ItemsData::class.java
         )
     }
+
+    fun readDetails(
+        context: Context,
+        @RawRes resourceId: Int
+    ): ItemDetail {
+
+        val json = context.resources
+            .openRawResource(resourceId)
+            .bufferedReader()
+            .use { it.readText() }
+
+        return gson.fromJson(
+            json,
+            ItemDetail::class.java
+        )
+    }
 }
+
+
 
 data class ItemsData(
     val chalisa: List<Item> = emptyList(),
@@ -37,6 +55,11 @@ data class Item(
 )
 
 data class ItemDetail(
+    val data: List<ItemDetailData?> = emptyList()
+)
+
+data class ItemDetailData(
     val id: Int,
+    val title: String,
     val content: String
 )
