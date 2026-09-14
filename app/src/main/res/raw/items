@@ -14,11 +14,11 @@
     },
     {
       "id": 4,
-      "title": "Ram Chalisa"
+      "title": "Durga Chalisa"
     },
     {
       "id": 5,
-      "title": "Durga Chalisa"
+      "title": "Ram Chalisa"
     },
     {
       "id": 6,
@@ -27,6 +27,10 @@
     {
       "id": 7,
       "title": "Bajrang Baan"
+    },
+    {
+      "id": 8,
+      "title": "Shani Chalisa"
     }
   ],
   "aarti": [
@@ -35,27 +39,27 @@
       "title": "Shiv Aarti"
     },
     {
-      "id": 8,
+      "id": 10,
       "title": "Hanuman Aarti"
     },
     {
-      "id": 10,
+      "id": 11,
       "title": "Ganesh Aarti"
     },
     {
-      "id": 13,
-      "title": "Ram Aarti"
-    },
-    {
-      "id": 11,
+      "id": 12,
       "title": "Durga Aarti"
     },
     {
-      "id": 12,
+      "id": 13,
       "title": "Lakshmi Aarti"
     },
     {
       "id": 14,
+      "title": "Ram Aarti"
+    },
+    {
+      "id": 15,
       "title": "Vishnu Ji Aarti"
     }
   ],
@@ -65,28 +69,28 @@
       "title": "Om Namah Shivay"
     },
     {
-      "id": 15,
+      "id": 17,
       "title": "Hanuman Mantra"
     },
     {
-      "id": 19,
+      "id": 18,
       "title": "Ganesh Mantra"
     },
     {
-      "id": 21,
-      "title": "Ram Mantra"
-    },
-    {
-      "id": 20,
+      "id": 19,
       "title": "Durga Mantra"
     },
     {
-      "id": 17,
+      "id": 20,
       "title": "Mahamrityunjaya Mantra"
     },
     {
-      "id": 18,
+      "id": 21,
       "title": "Gayatri Mantra"
+    },
+    {
+      "id": 22,
+      "title": "Ram Mantra"
     }
   ]
 }

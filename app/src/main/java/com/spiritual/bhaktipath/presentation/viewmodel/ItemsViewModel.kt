@@ -22,6 +22,15 @@ class ItemsViewModel @Inject constructor(private val itemsUseCase: ItemsUseCase)
     private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
     val uiState: StateFlow<UiState> = _uiState
 
+
+    private val _selectedTab = MutableStateFlow(0)
+    val selectedTab: StateFlow<Int> = _selectedTab
+
+
+    fun setSelectedTab(tabIndex: Int) {
+        _selectedTab.value = tabIndex
+    }
+
     init {
         loadItems()
     }
