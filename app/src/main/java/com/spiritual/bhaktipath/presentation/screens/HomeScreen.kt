@@ -168,7 +168,7 @@ fun HomeScreen(
 
                         val intent = Intent(
                             Intent.ACTION_VIEW,
-                            "market://details?id=com.spiritual.somvaarvrat".toUri()
+                            "market://details?id=com.spiritual.bhaktipath".toUri()
                         )
 
                         context.startActivity(intent)
@@ -203,6 +203,11 @@ fun HomeScreen(
                         selectedBottomItem = 2
 
                        // onAboutClick()
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            "market://details?id=com.spiritual.bhaktipath".toUri()
+                        )
+                        context.startActivity(intent)
                     },
 
                     icon = {
