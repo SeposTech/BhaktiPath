@@ -38,7 +38,7 @@ fun SplashScreen(modifier: Modifier = Modifier, navController: NavController) {
         contentAlignment = Alignment.Center
     ) {
         Image(
-            painter = painterResource(R.drawable.ic_spalsh),
+            painter = painterResource(R.drawable.ic_splash_new),
             contentDescription = "BhaktiPath splash screen",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
