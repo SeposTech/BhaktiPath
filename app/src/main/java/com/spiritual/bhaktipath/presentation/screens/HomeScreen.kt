@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.AutoAwesome
@@ -81,7 +82,8 @@ private val IconBackground = Color(0xFFFFE8CA)
 fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: ItemsViewModel = hiltViewModel(),
-    onItemClick: (Int) -> Unit = {}
+    onItemClick: (Int) -> Unit = {},
+    onBackClick:()-> Unit = {}
 ) {
     val selectedTab by viewModel.selectedTab.collectAsState()
     var selectedBottomItem by remember {
@@ -118,6 +120,15 @@ fun HomeScreen(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = TopBarColor
@@ -199,15 +210,18 @@ fun HomeScreen(
                     selected = selectedBottomItem == 2,
 
                     onClick = {
-
                         selectedBottomItem = 2
 
-                       // onAboutClick()
-                        val intent = Intent(
-                            Intent.ACTION_VIEW,
-                            "market://details?id=com.spiritual.bhaktipath".toUri()
-                        )
-                        context.startActivity(intent)
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(Intent.EXTRA_SUBJECT, "Bhakti Path")
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                "Bhakti Path app:\nhttps://play.google.com/store/apps/details?id=com.spiritual.bhaktipath"
+                            )
+                        }
+
+                        context.startActivity(Intent.createChooser(shareIntent, "Share via"))
                     },
 
                     icon = {
@@ -232,9 +246,6 @@ fun HomeScreen(
                 )
             }
         }
-
-
-
 
 
     ) { innerPadding ->
