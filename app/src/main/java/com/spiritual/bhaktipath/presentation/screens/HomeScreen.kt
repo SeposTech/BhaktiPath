@@ -61,6 +61,8 @@ import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.spiritual.bhaktipath.presentation.viewmodel.ItemsViewModel
 import com.spiritual.bhaktipath.ui.theme.BhaktiPathTheme
+import com.spiritual.bhaktipath.utils.AnalyticsHelper.logEvent
+import com.spiritual.bhaktipath.utils.TrackScreen
 
 // Spiritual Colors
 private val TopBarColor = Color(0xFFE8751A)
@@ -83,8 +85,9 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     viewModel: ItemsViewModel = hiltViewModel(),
     onItemClick: (Int) -> Unit = {},
-    onBackClick:()-> Unit = {}
+    onBackClick: () -> Unit = {}
 ) {
+    TrackScreen("HomeScreen")
     val selectedTab by viewModel.selectedTab.collectAsState()
     var selectedBottomItem by remember {
         mutableIntStateOf(0)
@@ -97,6 +100,7 @@ fun HomeScreen(
         is ItemsViewModel.UiState.Success -> {
             val itemsData = (uiState as ItemsViewModel.UiState.Success).items
             itemsData.firstOrNull()?.let { data ->
+                logEvent("Selected Tab is $selectedTab")
                 when (selectedTab) {
                     0 -> data.chalisa
                     1 -> data.aarti

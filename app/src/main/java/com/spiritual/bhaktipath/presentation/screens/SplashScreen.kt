@@ -17,12 +17,14 @@ import androidx.navigation.compose.rememberNavController
 import com.spiritual.bhaktipath.R
 import com.spiritual.bhaktipath.presentation.navigation.Screen
 import com.spiritual.bhaktipath.ui.theme.BhaktiPathTheme
+import com.spiritual.bhaktipath.utils.TrackScreen
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun SplashScreen(modifier: Modifier = Modifier, navController: NavController) {
 
+    TrackScreen("SplashScreen")
     LaunchedEffect(Unit) {
         delay(2000L.milliseconds)
         navController.navigate(Screen.Home.route) {

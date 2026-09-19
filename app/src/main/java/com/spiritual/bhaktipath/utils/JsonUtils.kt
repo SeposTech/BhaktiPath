@@ -1,6 +1,7 @@
 package com.spiritual.bhaktipath.utils
 
 import android.content.Context
+import androidx.annotation.Keep
 import androidx.annotation.RawRes
 import com.google.gson.Gson
 
@@ -42,22 +43,23 @@ object JsonUtils {
 }
 
 
-
+@Keep
 data class ItemsData(
     val chalisa: List<Item> = emptyList(),
     val aarti: List<Item> = emptyList(),
     val mantra: List<Item> = emptyList()
 )
-
+@Keep
 data class Item(
     val id: Int,
     val title: String
 )
-
+@Keep
 data class ItemDetail(
     val data: List<ItemDetailData?> = emptyList()
 )
 
+@Keep
 data class ItemDetailData(
     val id: Int,
     val title: String,

@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.spiritual.bhaktipath.presentation.viewmodel.DetailViewModel
 import com.spiritual.bhaktipath.ui.theme.BhaktiPathTheme
+import com.spiritual.bhaktipath.utils.TrackScreen
 
 private val TopBarColor = Color(0xFFE8751A)
 private val PrimaryDark = Color(0xFF743700)
@@ -46,6 +47,7 @@ fun DetailScreen(
     onBackPress: () -> Unit = {},
     viewModel: DetailViewModel = hiltViewModel()
 ) {
+    TrackScreen("DetailScreen")
     val uiState by viewModel.uiState.collectAsState()
 
     val topBarTitle = when (uiState) {

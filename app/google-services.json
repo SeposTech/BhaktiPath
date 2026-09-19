@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "926120059255",
+    "project_id": "bhaktipath-e48e0",
+    "storage_bucket": "bhaktipath-e48e0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:926120059255:android:32d44d0d2b4b30ae470172",
+        "android_client_info": {
+          "package_name": "com.spiritual.bhaktipath"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI7PYzzt4hI9yKx2WvqzpkqNhS5VXNkUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
