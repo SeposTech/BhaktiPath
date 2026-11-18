@@ -1,5 +1,6 @@
 package com.spiritual.bhaktipath.presentation.screens
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,25 +11,61 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.spiritual.bhaktipath.R
-import com.spiritual.bhaktipath.presentation.navigation.Screen
-import com.spiritual.bhaktipath.ui.theme.BhaktiPathTheme
 import com.spiritual.bhaktipath.utils.TrackScreen
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.tasks.await
 import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun SplashScreen(modifier: Modifier = Modifier, navController: NavController) {
+fun SplashScreen(modifier: Modifier = Modifier, appUpdateManager: AppUpdateManager,
+                 onNavigateToHome: () -> Unit) {
 
     TrackScreen("SplashScreen")
+    val context = LocalContext.current
+    val activity = context as? Activity
+
     LaunchedEffect(Unit) {
-        delay(2000L.milliseconds)
-        navController.navigate(Screen.Home.route) {
-            popUpTo(Screen.Splash.route) { inclusive = true }
+
+        try {
+
+            val appUpdateInfo =
+                appUpdateManager.appUpdateInfo.await()
+
+            if (
+                appUpdateInfo.updateAvailability() ==
+                UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(
+                    AppUpdateType.IMMEDIATE
+                )
+            ) {
+
+                activity?.let {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.IMMEDIATE,
+                        it,
+                        100
+                    )
+                }
+
+            } else {
+
+                delay(2000.milliseconds)
+
+                onNavigateToHome()
+            }
+
+        } catch (e: Exception) {
+
+            delay(2000.milliseconds)
+
+            onNavigateToHome()
         }
     }
 
@@ -47,12 +84,4 @@ fun SplashScreen(modifier: Modifier = Modifier, navController: NavController) {
         )
     }
 
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSplashScreen() {
-    BhaktiPathTheme {
-        SplashScreen(navController = rememberNavController())
-    }
 }

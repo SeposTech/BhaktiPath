@@ -7,12 +7,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.android.play.core.appupdate.AppUpdateManager
 import com.spiritual.bhaktipath.presentation.screens.DetailScreen
 import com.spiritual.bhaktipath.presentation.screens.HomeScreen
 import com.spiritual.bhaktipath.presentation.screens.SplashScreen
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    appUpdateManager: AppUpdateManager
+) {
     val navController = rememberNavController()
     val context = LocalContext.current
     val activity = context as? Activity
@@ -20,7 +23,11 @@ fun AppNavigation() {
     NavHost(navController, startDestination = Screen.Splash.route) {
 
         composable(Screen.Splash.route) {
-            SplashScreen(navController = navController)
+            SplashScreen(appUpdateManager = appUpdateManager, onNavigateToHome = {
+                navController.navigate(Screen.Home.route) {
+                    popUpTo(Screen.Splash.route) { inclusive = true }
+                }
+            })
         }
 
         composable(route = Screen.Home.route) {
